@@ -1,0 +1,39 @@
+.dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .dashboard-stat {
+    width: 100px;
+    height: 100px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-stat h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .dashboard-stat p {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .icon {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  
+  

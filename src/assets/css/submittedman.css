@@ -1,0 +1,137 @@
+.manuscripts-table-container {
+    margin-top: 20px;
+  }
+  
+  .manuscripts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .manuscripts-table th,
+  .manuscripts-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .action-button {
+    margin-right: 10px;
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+  }
+  
+  .action-dropdown {
+    position: relative;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    display: none;
+    white-space: nowrap;
+    margin-right: 10px;
+  }
+  
+  .action-button:hover .action-dropdown {
+    display: block;
+  }
+  
+  .action-dropdown button {
+    width: 100%;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: none;
+    text-align: left;
+  }
+  
+  .action-dropdown button:hover {
+    background-color: #ddd;
+  }
+  
+  /* SubmittedManuscriptsTable.css */
+
+.manuscripts-table-container {
+    margin-top: 20px;
+  }
+  
+  .manuscripts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .manuscripts-table th,
+  .manuscripts-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .manuscripts-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .manuscripts-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .manuscripts-table tbody tr:hover {
+    background-color: #ddd;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .action-button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .action-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .action-dropdown {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 5px;
+    z-index: 1;
+    display: none;
+  }
+  
+  .action-dropdown button {
+    display: block;
+    padding: 5px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .action-dropdown button:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .action-buttons:hover .action-dropdown {
+    display: block;
+  }
+  
+  
