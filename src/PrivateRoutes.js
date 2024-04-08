@@ -7,6 +7,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const currentUser = auth.currentUser;
 
   return (
+    
     <Route
       {...rest}
       render={(props) =>
