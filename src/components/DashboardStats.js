@@ -19,11 +19,23 @@ const DashboardStats = () => {
         const submittedDocs = await firestore.collection('SubmittedManuscripts').get();
         const submittedCount = submittedDocs.size;
 
-        // Update the stats state with the total number of submitted manuscripts
+        // Get the number of manuscripts in the ReviewingManuscripts collection (invited but not responded)
+        const reviewingDocs = await firestore.collection('ReviewingManuscripts').get();
+        const reviewingCount = reviewingDocs.size;
+
+        // Calculate the number of manuscripts under "Review For Proposal"
+        const reviewForProposalCount = submittedCount - reviewingCount;
+
+        // Update the stats state with the fetched counts
         setStats((prevStats) => ({
           ...prevStats,
           submitted: submittedCount,
+          reviewed: reviewingCount,
+          underReview: prevStats.underReview, // You need to fetch this value from another source
+          rejected: prevStats.rejected, // You need to fetch this value from another source
+          processed: prevStats.processed, // You need to fetch this value from another source
           total: submittedCount, // Set total to the number of submitted manuscripts
+          reviewForProposal: reviewForProposalCount, // Set the count of manuscripts under "Review For Proposal"
         }));
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -37,7 +49,7 @@ const DashboardStats = () => {
     <div className="dashboard-stats">
       <div className="dashboard-stat">
         <h3>Review For Proposal</h3>
-        <p>{stats.submitted}</p>
+        <p>{stats.reviewForProposal}</p>
       </div>
       <div className="dashboard-stat">
         <h3>Reviewer Invited but not responded</h3>

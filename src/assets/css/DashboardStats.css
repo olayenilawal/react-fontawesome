@@ -1,39 +1,40 @@
 .dashboard-stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
-  .dashboard-stat {
-    width: 100px;
-    height: 100px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dashboard-stat h3 {
-    font-size: 12px;
-    margin-bottom: 8px;
-  }
-  
-  .dashboard-stat p {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .icon {
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  
-  
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+}
+
+.dashboard-stat {
+  background-color: var(--gray);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Align items with space between them */
+  align-items: center; /* Center items vertically */
+  height: 100px;
+
+}
+
+.dashboard-stat:hover {
+  background-color: green;
+  color: white;
+}
+
+.dashboard-stat:hover p{
+  color: white;
+}
+
+.dashboard-stat h3 {
+  font-size: 1em;
+  margin-right: 10px; /* Add margin to separate from value */
+}
+
+.dashboard-stat p {
+  font-size: 4.2em;
+  font-weight: bold;
+  color: green;
+}

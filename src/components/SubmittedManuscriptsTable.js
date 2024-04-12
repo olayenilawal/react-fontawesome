@@ -5,6 +5,8 @@ import '../assets/css/submittedman.css';
 import { firestore, storage } from '../firebase/firebase';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import InvitePopup from '../components/InvitePopup';
+import { useNavigate } from 'react-router-dom';
 
 
 // Adjust the path to your Firebase configuration file
@@ -13,6 +15,7 @@ import jsPDF from 'jspdf';
 const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
   const [showAbstractPopup, setShowAbstractPopup] = useState(false);
   const [currentAbstract, setCurrentAbstract] = useState('');
+  const navigate = useNavigate(); 
 
   const fetchAbstract = async (manuscriptId) => {
     try {
@@ -72,15 +75,15 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
     try {
       const imageElement = new Image();
       imageElement.src = imageUrl;
-  
+
       imageElement.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = imageElement.naturalWidth;
         canvas.height = imageElement.naturalHeight;
-  
+
         const ctx = canvas.getContext('2d');
         ctx.drawImage(imageElement, 0, 0);
-  
+
         let imgData;
         if (outputFormat === 'png') {
           imgData = canvas.toDataURL('image/png');
@@ -90,16 +93,14 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
           imgData = canvas.toDataURL('image/gif');
         } else if (outputFormat === 'bmp') {
           imgData = canvas.toDataURL('image/bmp');
-        } else if (outputFormat === 'doc') {
-          imgData = canvas.toDataURL('image/doc');
         } else {
           throw new Error('Unsupported image format');
         }
-  
+
         const pdf = new jsPDF();
         const imgWidth = pdf.internal.pageSize.getWidth();
         const imgHeight = (imageElement.naturalHeight * imgWidth) / imageElement.naturalWidth;
-  
+
         pdf.addImage(imgData, outputFormat.toUpperCase(), 0, 0, imgWidth, imgHeight);
         pdf.save('image.pdf');
       };
@@ -107,14 +108,21 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
       console.error('Error converting image to PDF:', error);
     }
   };
-  
+
   // Example usage:
   viewImageAsPdf('https://example.com/image.jpg', 'jpeg'); // Convert JPEG image to PDF
   viewImageAsPdf('https://example.com/image.png', 'png'); // Convert PNG image to PDF
   viewImageAsPdf('https://example.com/image.gif', 'gif'); // Convert GIF image to PDF
   viewImageAsPdf('https://example.com/image.bmp', 'bmp'); // Convert BMP image to PDF
-  viewImageAsPdf('https://example.com/image.doc', 'doc');
-  
+  // viewImageAsPdf('https://example.com/image.doc', 'doc');
+
+  // const handleInviteReviewer = (manuscript) => {
+  //   setSelectedManuscript(manuscript);
+  // };
+
+  // const closeReviewerManagement = () => {
+  //   setSelectedManuscript(null);
+  // };
 
 
 
@@ -127,17 +135,17 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
       case 'ViewFullManuscript':
         downloadFile(manuscripts.find(m => m.id === manuscriptId).fullPagesUrl);
         break;
-      // case 'ViewPictures':
-      //   viewPicturesAsPdf(manuscripts.find(m => m.id === manuscriptId).picturesUrl);
-      //   break;
+      case 'ViewPictures':
+        viewImageAsPdf(manuscripts.find(m => m.id === manuscriptId).picturesUrl);
+        break;
       case 'ViewWordDocument':
         downloadFile(manuscripts.find(m => m.id === manuscriptId).firstPageUrl);
         break;
       case 'ViewPDF':
         downloadFile(manuscripts.find(m => m.id === manuscriptId).fullPagesUrl);
-        break;
-      case 'InviteReviewer':
-        handleAction(manuscriptId, 'InviteReviewer');
+        break
+        case 'InviteReviewer':
+        navigateToInviteReviewer(manuscriptId); // Use navigate function to go to InviteReviewer page
         break;
       case 'Standardize':
         handleAction(manuscriptId, 'Standardize');
@@ -147,7 +155,10 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
     }
   };
 
-
+  const navigateToInviteReviewer = (manuscriptId) => {
+    // Use navigate function from useNavigate hook to navigate to InviteReviewer page
+    navigate(`/manage-reviewers/${manuscriptId}`);
+  };
 
   return (
     <div className="manuscripts-table-container">
@@ -170,7 +181,7 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
               <td>{manuscript.name}</td>
               <td>{manuscript.email}</td>
               <td>{manuscript.institution}</td>
-              <td>{manuscript.contactInformation}</td>
+              <td>{manuscript.contactInfo}</td>
               <td>{manuscript.college}</td>
               <td>
                 <div className="action-buttons">
@@ -187,7 +198,7 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
                     <button onClick={() => handleActionClick(manuscript.id, 'ViewFullManuscript')}>
                       <FontAwesomeIcon icon={faHandPointer} /> View Manuscript
                     </button>
-                    <button onClick={() => viewImageAsPdf(manuscript.id.pictureUrl)}>
+                    <button onClick={() => viewImageAsPdf(manuscript.id, 'ViewPDF')}>
                       <FontAwesomeIcon icon={faHandPointer} /> View Image as PDF
                     </button>
                     <button onClick={() => handleActionClick(manuscript.id, 'ViewWordDocument')}>
@@ -197,7 +208,7 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
                       <FontAwesomeIcon icon={faHandPointer} /> View Manuscript as PDF
                     </button>
                     <button onClick={() => handleActionClick(manuscript.id, 'InviteReviewer')}>
-                      <FontAwesomeIcon icon={faPlus} /> Invite Viewer
+                      <FontAwesomeIcon icon={faPlus} /> Invite Reviewer
                     </button>
                     <button onClick={() => handleActionClick(manuscript.id, 'Standardize')}>
                       <FontAwesomeIcon icon={faHandPointer} /> Standardize
@@ -221,6 +232,7 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

@@ -1,0 +1,127 @@
+
+
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    background: #f2f2f2;
+}
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+.form_wrapper {
+    background: #fff;
+    width: 400px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 25px;
+    margin: 8% auto 0;
+    position: relative;
+    z-index: 1;
+    border-top: 5px solid #f5ba1a;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.8s ease-out;
+    opacity: 0;
+}
+.form_wrapper h2 {
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin: 0;
+}
+.form_wrapper .title_container {
+    text-align: center;
+    padding-bottom: 15px;
+}
+.form_wrapper label {
+    font-size: 12px;
+}
+.form_wrapper .row {
+    margin: 10px -15px;
+}
+.form_wrapper .row > div {
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+.form_wrapper .col_half {
+    width: 50%;
+    float: left;
+}
+.form_wrapper .input_field {
+    position: relative;
+    margin-bottom: 20px;
+}
+.form_wrapper input[type="text"], .form_wrapper input[type="email"], .form_wrapper input[type="password"] {
+    width: 100%;
+    padding: 8px 10px 9px 35px;
+    height: 35px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+.form_wrapper input[type="text"]:hover, .form_wrapper input[type="email"]:hover, .form_wrapper input[type="password"]:hover, .form_wrapper input[type="text"]:focus, .form_wrapper input[type="email"]:focus, .form_wrapper input[type="password"]:focus {
+    background: #fafafa;
+    border: 1px solid #f5ba1a;
+    display: inline-block;
+}
+.form_wrapper input[type="submit"] {
+    background: #f5ba1a;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+.form_wrapper input[type="submit"]:hover, .form_wrapper input[type="submit"]:focus {
+    background: #e1a70a;
+}
+.radio_option label {
+    margin-right: 1em;
+    display: inline-block;
+    cursor: pointer;
+}
+.radio_option label:before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+}
+.radio_option input[type="radio"] {
+    display: none;
+    white-space: nowrap;
+    width: 100%;
+}
+.radio_option input[type="radio"]:checked + label:before {
+    background-color: #000;
+    border-color: #000;
+    
+}
+
+#role {
+    width: 100%;
+}
+
+#role {
+    width: 100%;
+}
+
+/* .icon {
+    border-top-style: solid;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  padding: 5px;
+  height: a10px;
+} */
