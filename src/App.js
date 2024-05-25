@@ -26,6 +26,7 @@ const App = () => {
         <Route path="/review" element={<ReviewerDashboard />} />
         <Route path="/member" element={<MemberDashboard />} />
         <Route path="/status" element={<ManuscriptStatusCheck />} />
+        <Route path="/form" element={<ManuscriptForm />} />
         <Route path="/dashboard/*" element={<PrivateRoute component={Dashboard} />}>
           <Route path="submit-manuscript" element={<SubmitManuscript />} />
           <Route path="view-manuscripts" element={<ViewManuscripts />} />
@@ -33,7 +34,6 @@ const App = () => {
           <Route path="manage-members" element={<ManageReviewers />} />
           <Route path="manage-users" element={<ManageUsers />} />
         </Route>
-        <Route path="/form" element={<PrivateRoute component={ManuscriptForm} />} />
         <Route path="/manage-reviewers/:manuscriptId" element={<PrivateRoute component={InviteReviewerPage} />} />
         <Route path="/manage-members/:manuscriptId" element={<PrivateRoute component={MembersList} />} />
       </Routes>
