@@ -33,65 +33,45 @@ const ReviewingManuscriptsTable = ({ manuscripts, onHandleAction }) => {
 
   const uploadDocument = async (manuscriptId) => {
     try {
-      // Prompt the user to select files
+      console.log('Creating file input');
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
-      fileInput.accept = 'application/pdf'; // Specify accepted file types
-      fileInput.multiple = true; // Allow multiple file selection
-  
-      // Listen for the file input change event
+      fileInput.accept = 'application/pdf';
+      fileInput.multiple = true;
       fileInput.addEventListener('change', async (event) => {
         const files = event.target.files;
-  
-        // Check if files were selected
-        if (files && files.length > 0) {
+        console.log('Files selected:', files);
+        if (files.length > 0) {
           try {
             const downloadURLs = [];
-  
-            // Iterate through each selected file
             for (let i = 0; i < files.length; i++) {
               const file = files[i];
-  
-              // Create a storage reference for the manuscript file
+              console.log(`Uploading file: ${file.name}`);
               const storageRef = storage.ref(`manuscripts/${manuscriptId}/${file.name}`);
-  
-              // Upload the file to Firebase Storage
               const uploadTaskSnapshot = await storageRef.put(file);
-  
-              // Get the download URL of the saved file
               const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
-  
-              // Push the download URL to the array
+              console.log(`File uploaded: ${file.name}, URL: ${downloadURL}`);
               downloadURLs.push(downloadURL);
             }
-  
-            // Update the "UpdatedManuscript" field in Firestore with the array of download URLs
             await firestore.collection('ReviewingManuscripts').doc(manuscriptId).update({ UpdatedManuscript: downloadURLs });
-  
-            // Trigger action handler if it's a function
+            console.log('Firestore updated with URLs:', downloadURLs);
             if (typeof onHandleAction === 'function') {
               onHandleAction(manuscriptId, 'Upload');
             }
-  
-            // Alert document updated successfully
-            window.alert('Document updated successfully.');
+            window.alert('Document uploaded successfully.');
           } catch (uploadError) {
             console.error('Error uploading manuscript to storage:', uploadError);
-            window.alert('Error uploading manuscript to storage. Please try again.');
           }
         }
       });
-  
-      // Trigger the file input click event
+      console.log('Triggering file input click');
       fileInput.click();
     } catch (error) {
       console.error('Error uploading manuscript:', error);
     }
-  
-    // Close the confirmation dialog
     closeConfirmation();
   };
-  
+
 
   const rejectManuscript = async (manuscript) => {
     try {
@@ -191,7 +171,7 @@ const ReviewingManuscriptsTable = ({ manuscripts, onHandleAction }) => {
                     </button>
                     <div className="dropdown-content">
                       <button onClick={() => downloadDocument(manuscript)}>Download Document</button>
-                      <button onClick={() => uploadDocument(manuscript)}>Upload Document</button>
+                      <button onClick={() => uploadDocument(manuscript.id)}>Upload Document</button>
                     </div>
                   </div>
                   <button className="action-button" onClick={() => openConfirmation('Reject', manuscript)}>
