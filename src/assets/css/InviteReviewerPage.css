@@ -1,14 +1,4 @@
-/* Styles for the container */
-.invite-reviewer-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    position: relative; /* Ensure container is positioned relative for absolute positioning of modal */
-}
+
 
 /* Styles for manuscript details */
 .manuscript-details {
@@ -32,6 +22,10 @@
 /* Styles for the table */
 .reviewers-table {
     width: 100%;
+    overflow: hidden;
+    
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .reviewers-table th,
@@ -41,7 +35,7 @@
 }
 
 .reviewers-table th {
-    background-color: #0f9100;
+    background-color: #007bff;
     color: #fff;
 }
 
@@ -70,7 +64,7 @@
 }
 
 .button-group button.primary {
-    background-color: #0f9100;
+    background-color: #007bff;
     color: #fff;
 }
 
@@ -81,7 +75,7 @@
 
 /* Add button styling */
 .add-button {
-    background-color: green;
+    background-color: #007bff;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -89,13 +83,13 @@
 }
 
 .add-button:hover {
-    background-color: darkgreen;
+    background-color: dark#007bff;
     cursor: pointer;
 }
 
 /* Style the "Add" button to align right */
 .button-group .add-buttons {
-    background-color: green; /* Button background color */
+    background-color: #007bff; /* Button background color */
     color: #fff; /* Button text color */
     border: none; /* Remove button border */
     padding: 5px 10px; /* Padding inside the button */
@@ -107,7 +101,7 @@
 }
 
 .add-buttons:hover {
-    background-color: darkgreen;
+    background-color: dark#007bff;
     cursor: pointer; /* Button background color on hover */
 }
 
@@ -136,7 +130,7 @@
 }
 
 .modal-content button{
-    background-color: green; /* Button background color */
+    background-color: #007bff; /* Button background color */
     color: #fff; /* Button text color */
     border: none; /* Remove button border */
     padding: 5px 10px; /* Padding inside the button */
@@ -194,7 +188,7 @@
     flex-direction: column;
   }
   
-  .container {
+  /* .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -205,7 +199,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+   */
   .button-container {
     display: flex;
     align-items: center;
@@ -261,7 +255,7 @@
   }
   
   .button-primary {
-    background-color: #0f9100;
+    background-color: #007bff;
   }
   
   .button-secondary {

@@ -224,7 +224,7 @@ const InviteReviewerPage = () => {
             </div>
 
             <div className="reviewers-list">
-                <h3>Reviewers:</h3>
+                <h3>Members:</h3>
                 <Table striped bordered hover className="reviewers-table">
                     <thead className="thead-dark">
                         <tr>

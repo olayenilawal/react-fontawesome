@@ -1,162 +1,168 @@
-.manuscripts-table-container {
-    margin-top: 20px;
-  }
-  
-  .manuscripts-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .manuscripts-table th,
-  .manuscripts-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    align-items: center;
-  }
-  
-  .action-button {
-    margin-right: 10px;
-    padding: 8px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    margin-right: 30px;
-  }
-  
-  .action-dropdown {
-    position: relative;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    display: none;
-    white-space: nowrap;
-    margin-right: 10px;
-  }
-  
-  .action-button:hover .action-dropdown {
-    display: block;
-  }
-  
-  .action-dropdown button {
-    width: 100%;
-    padding: 8px;
-    background-color: #f9f9f9;
-    border: none;
-    text-align: left;
-  }
-  
-  .action-dropdown button:hover {
-    background-color: #ddd;
-  }
-  
-  /* SubmittedManuscriptsTable.css */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
 
 .manuscripts-table-container {
-    margin-top: 20px;
-  }
-  
-  .manuscripts-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .manuscripts-table th,
-  .manuscripts-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .manuscripts-table th {
-    background-color: green;
-    color: white;
-  }
-  
-  .manuscripts-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .manuscripts-table tbody tr:hover {
-    background-color: #ddd;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .action-button {
-    padding: 8px 12px;
-    background-color: green;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .action-button:hover {
-    background-color: rgb(3, 199, 3);
-  }
-  
-  .action-dropdown {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 5px;
-    z-index: 1;
-    display: none;
-  }
-  
-  .action-dropdown button {
-    display: block;
-    padding: 5px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
-  
-  .action-dropdown button:hover {
-    background-color: #f2f2f2;
-  }
-  
-  .action-buttons:hover .action-dropdown {
-    display: block;
-  }
-  
-    /* Style for the popup content */
+  margin-top: 20px;
+  position: relative;
+  z-index: 9999;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
 
-    .popup-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999; /* Ensure popup is above other content */
-    }
-    
-    .invite-popup {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      width: 400px;
-    }
-    
+/* submittedman.css */
+.manuscripts-table-container {
+  width: 100%;
+  /* overflow: hidden; */
+}
+
+.manuscripts-table {
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+.manuscripts-table th,
+.manuscripts-table td {
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.manuscripts-table th,
+.manuscripts-table td {
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.manuscripts-table .actions {
+  border-bottom: 1px solid #ddd;
+  border-right: 0 solid #ddd;
+}
+
+.manuscripts-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* margin-bottom: 20px; */
+  border-radius: 10px;
+  /* Add border radius to the table */
+}
+
+.action-dropdown {
+  position: absolute;
+  top: -150px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 5px;
+  white-space: nowrap;
+  font-size: small;
+  display: none;
+  /* Initially hide the dropdown */
+}
+
+.action-button:hover+.action-dropdown,
+.action-dropdown:hover {
+  display: block;
+  /* Show dropdown when action button or dropdown itself is hovered */
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 10px;
+  right: 20px;
+  margin-left: auto;
+}
+
+.pagination button {
+  margin: 0 4px;
+  padding: 6px 10px;
+  border: none;
+  background-color: #007bff;
+  /* #007bff color */
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: dark#007bff;
+  /* Dark #007bff on hover */
+}
+
+.action-buttons {
+  display: inline-block;
+  /* Ensure the container wraps its content */
+  position: relative;
+  /* Establish positioning context for absolute positioning */
+}
+
+.action-button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+
+th {
+  background-color: #fff;
+  color: #007bff;
+  border: 0;
+}
+
+tr:hover {
+  background-color: #e8e8e8;
+}
+
+
+.action-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.action-dropdown button:hover {
+  background-color: #f2f2f2;
+}
+
+/* Style for the popup content */
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* Ensure popup is above other content */
+}
+
+.invite-popup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
 
 .invite-popup h3 {
   font-size: 20px;
@@ -183,177 +189,3 @@
 .invite-popup button:last-child {
   margin-right: 0;
 }
-
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
-
-* {font-family: 'Open Sans', sans-serif;}
-
-.rwd-table {
-  margin: auto;
-  min-width: 300px;
-  max-width: 100%;
-  border-collapse: collapse;
-}
-
-.rwd-table tr:first-child {
-  border-top: none;
-  background: #428bca;
-  color: #fff;
-}
-
-.rwd-table tr {
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: #f5f9fc;
-}
-
-.rwd-table tr:nth-child(odd):not(:first-child) {
-  background-color: #ebf3f9;
-}
-
-.rwd-table th {
-  display: none;
-}
-
-.rwd-table td {
-  display: block;
-}
-
-.rwd-table td:first-child {
-  margin-top: .5em;
-}
-
-.rwd-table td:last-child {
-  margin-bottom: .5em;
-}
-
-.rwd-table td:before {
-  content: attr(data-th) ": ";
-  font-weight: bold;
-  width: 120px;
-  display: inline-block;
-  color: #000;
-}
-
-.rwd-table th,
-.rwd-table td {
-  text-align: left;
-}
-
-.rwd-table {
-  color: #333;
-  border-radius: .4em;
-  overflow: hidden;
-}
-
-.rwd-table tr {
-  border-color: #bfbfbf;
-}
-
-.rwd-table th,
-.rwd-table td {
-  padding: .5em 1em;
-}
-@media screen and (max-width: 601px) {
-  .rwd-table tr:nth-child(2) {
-    border-top: none;
-  }
-}
-@media screen and (min-width: 600px) {
-  .rwd-table tr:hover:not(:first-child) {
-    background-color: #d8e7f3;
-  }
-  .rwd-table td:before {
-    display: none;
-  }
-  .rwd-table th,
-  .rwd-table td {
-    display: table-cell;
-    padding: .25em .5em;
-  }
-  .rwd-table th:first-child,
-  .rwd-table td:first-child {
-    padding-left: 0;
-  }
-  .rwd-table th:last-child,
-  .rwd-table td:last-child {
-    padding-right: 0;
-  }
-  .rwd-table th,
-  .rwd-table td {
-    padding: 1em !important;
-  }
-}
-
-
-/* THE END OF THE IMPORTANT STUFF */
-
-/* Basic Styling */
-/* body {
-background: #4B79A1;
-background: -webkit-linear-gradient(to left, #4B79A1 , #283E51);
-background: linear-gradient(to left, #4B79A1 , #283E51);        
-}
-h1 {
-  text-align: center;
-  font-size: 2.4em;
-  color: #f2f2f2;
-} */
-.container {
-  display: block;
-  text-align: center;
-}
-/* h3 {
-  display: inline-block;
-  position: relative;
-  text-align: center;
-  font-size: 1.5em;
-  color: #cecece;
-} */
-h3:before {
-  content: "\25C0";
-  position: absolute;
-  left: -50px;
-  -webkit-animation: leftRight 2s linear infinite;
-  animation: leftRight 2s linear infinite;
-}
-h3:after {
-  content: "\25b6";
-  position: absolute;
-  right: -50px;
-  -webkit-animation: leftRight 2s linear infinite reverse;
-  animation: leftRight 2s linear infinite reverse;
-}
-@-webkit-keyframes leftRight {
-  0%    { -webkit-transform: translateX(0)}
-  25%   { -webkit-transform: translateX(-10px)}
-  75%   { -webkit-transform: translateX(10px)}
-  100%  { -webkit-transform: translateX(0)}
-}
-@keyframes leftRight {
-  0%    { transform: translateX(0)}
-  25%   { transform: translateX(-10px)}
-  75%   { transform: translateX(10px)}
-  100%  { transform: translateX(0)}
-}
-
-/*
-    Don't look at this last part. It's unnecessary. I was just playing with pixel gradients... Don't judge.
-*/
-/*
-@media screen and (max-width: 601px) {
-  .rwd-table tr {
-    background-image: -webkit-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -moz-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -o-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -ms-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-  }
-  .rwd-table tr:nth-child(odd) {
-    background-image: -webkit-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -moz-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -o-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -ms-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-  }
-}*/

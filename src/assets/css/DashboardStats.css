@@ -1,8 +1,17 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .dashboard-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping to ensure all items stay on one line */
+  gap: 20px; /* Use gap instead of grid-gap for flex */
   padding: 20px;
+  overflow-x: auto; /* Add horizontal scroll if items overflow */
+  width: 100%;
+  align-content: center;
 }
 
 .dashboard-stat {
@@ -16,25 +25,25 @@
   justify-content: space-between; /* Align items with space between them */
   align-items: center; /* Center items vertically */
   height: 100px;
-
+  width: 150px;
 }
 
 .dashboard-stat:hover {
-  background-color: green;
+  background-color: #007bff;
   color: white;
+  margin: 10px 15px;
 }
-
-.dashboard-stat:hover p{
+.dashboard-stat:hover p {
   color: white;
 }
 
 .dashboard-stat h3 {
-  font-size: 1em;
+  font-size: 0.8em;
   margin-right: 10px; /* Add margin to separate from value */
 }
 
 .dashboard-stat p {
-  font-size: 4.2em;
+  font-size: 2.2em;
   font-weight: bold;
-  color: green;
+  color: #007bff;
 }

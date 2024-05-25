@@ -1,0 +1,226 @@
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandPointer, faEdit, faTrash, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { firestore, storage } from '../firebase/firebase';
+import '../assets/css/submittedman.css';
+import '../assets/css/Reviewer.css';
+
+const ReviewingManuscriptsTable = ({ manuscripts, onHandleAction }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedManuscript, setSelectedManuscript] = useState(null);
+  const [selectedAction, setSelectedAction] = useState('');
+
+  const openConfirmation = (action, manuscript) => {
+    setSelectedAction(action);
+    setSelectedManuscript(manuscript);
+    setShowConfirmation(true);
+  };
+
+  const closeConfirmation = () => {
+    setShowConfirmation(false);
+    setSelectedAction('');
+    setSelectedManuscript(null);
+  };
+
+  const downloadDocument = async (manuscript) => {
+    try {
+      // Open the manuscript URL in a new tab
+      window.open(manuscript.fullPagesUrl, '_blank');
+    } catch (error) {
+      console.error('Error downloading manuscript:', error);
+    }
+  };
+
+  const uploadDocument = async (manuscriptId) => {
+    try {
+      // Prompt the user to select files
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'application/pdf'; // Specify accepted file types
+      fileInput.multiple = true; // Allow multiple file selection
+  
+      // Listen for the file input change event
+      fileInput.addEventListener('change', async (event) => {
+        const files = event.target.files;
+  
+        // Check if files were selected
+        if (files && files.length > 0) {
+          try {
+            const downloadURLs = [];
+  
+            // Iterate through each selected file
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+  
+              // Create a storage reference for the manuscript file
+              const storageRef = storage.ref(`manuscripts/${manuscriptId}/${file.name}`);
+  
+              // Upload the file to Firebase Storage
+              const uploadTaskSnapshot = await storageRef.put(file);
+  
+              // Get the download URL of the saved file
+              const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+  
+              // Push the download URL to the array
+              downloadURLs.push(downloadURL);
+            }
+  
+            // Update the "UpdatedManuscript" field in Firestore with the array of download URLs
+            await firestore.collection('ReviewingManuscripts').doc(manuscriptId).update({ UpdatedManuscript: downloadURLs });
+  
+            // Trigger action handler if it's a function
+            if (typeof onHandleAction === 'function') {
+              onHandleAction(manuscriptId, 'Upload');
+            }
+  
+            // Alert document updated successfully
+            window.alert('Document updated successfully.');
+          } catch (uploadError) {
+            console.error('Error uploading manuscript to storage:', uploadError);
+            window.alert('Error uploading manuscript to storage. Please try again.');
+          }
+        }
+      });
+  
+      // Trigger the file input click event
+      fileInput.click();
+    } catch (error) {
+      console.error('Error uploading manuscript:', error);
+    }
+  
+    // Close the confirmation dialog
+    closeConfirmation();
+  };
+  
+
+  const rejectManuscript = async (manuscript) => {
+    try {
+      const reviewingRef = firestore.collection('ReviewingManuscripts');
+      const querySnapshot = await reviewingRef.where('id', '==', manuscript.id).get();
+
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        // Update status field in ReviewingManuscripts collection
+        await doc.ref.update({ status: 'Manuscript rejected' });
+        // Trigger action handler if it's a function
+        if (typeof onHandleAction === 'function') {
+          onHandleAction(doc.id, 'Reject');
+        }
+        // Alert status updated
+        window.alert('Status updated successfully.');
+      } else {
+        console.error('Document does not exist:', manuscript.id);
+      }
+    } catch (error) {
+      console.error('Error rejecting manuscript:', error);
+    }
+    closeConfirmation();
+  };
+
+  const completeManuscript = async (manuscript) => {
+    try {
+      const reviewingRef = firestore.collection('ReviewingManuscripts');
+      const querySnapshot = await reviewingRef.where('id', '==', manuscript.id).get();
+
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        // Update status field in ReviewingManuscripts collection
+        await doc.ref.update({ status: 'Manuscript reviewed' });
+        // Trigger action handler if it's a function
+        if (typeof onHandleAction === 'function') {
+          onHandleAction(doc.id, 'Complete');
+        }
+        // Alert status updated
+        window.alert('Status updated successfully.');
+      } else {
+        console.error('Document does not exist:', manuscript.id);
+      }
+    } catch (error) {
+      console.error('Error completing manuscript:', error);
+    }
+    closeConfirmation();
+  };
+
+  const performAction = () => {
+    if (selectedAction === 'View') {
+      window.open(selectedManuscript.fullPagesUrl, '_blank');
+    } else if (selectedAction === 'Reject') {
+      rejectManuscript(selectedManuscript);
+    } else if (selectedAction === 'Complete') {
+      completeManuscript(selectedManuscript);
+    }
+    closeConfirmation();
+  };
+
+  const filteredManuscripts = manuscripts.filter(
+    (manuscript) => manuscript.status !== 'Rejected' && manuscript.status !== 'Completed'
+  );
+
+  return (
+    <div className="manuscripts-table" style={{ marginLeft: '250px' }}>
+      <h3>Reviewing Manuscripts</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Institution</th>
+            <th>Contact Information</th>
+            <th>College</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredManuscripts.map((manuscript) => (
+            <tr key={manuscript.id}>
+              <td>{manuscript.id}</td>
+              <td>{manuscript.name}</td>
+              <td>{manuscript.email}</td>
+              <td>{manuscript.institution}</td>
+              <td>{manuscript.contactInfo}</td>
+              <td>{manuscript.college}</td>
+              <td>
+                <div className="action-buttons">
+                  <button className="action-button" onClick={() => openConfirmation('View', manuscript)}>
+                    <FontAwesomeIcon icon={faHandPointer} />
+                  </button>
+                  <div className="dropdown">
+                    <button className="action-button edit">
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <div className="dropdown-content">
+                      <button onClick={() => downloadDocument(manuscript)}>Download Document</button>
+                      <button onClick={() => uploadDocument(manuscript)}>Upload Document</button>
+                    </div>
+                  </div>
+                  <button className="action-button" onClick={() => openConfirmation('Reject', manuscript)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                  <button className="action-button" onClick={() => openConfirmation('Complete', manuscript)}>
+                    <FontAwesomeIcon icon={faCheckCircle} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Confirmation Dialog */}
+      {showConfirmation && (
+        <div className="confirmation-dialog">
+          <p>Do you wish to {selectedAction.toLowerCase()} this manuscript?</p>
+          <div className="confirmation-buttons">
+            <button onClick={performAction}>Yes</button>
+            <button onClick={closeConfirmation}>No</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ReviewingManuscriptsTable;
+
+

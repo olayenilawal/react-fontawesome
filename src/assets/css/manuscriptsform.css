@@ -1,91 +1,185 @@
-.submitted-manuscripts-form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .submitted-manuscripts-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .submitted-manuscripts-form form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .submitted-manuscripts-form label {
-    margin-bottom: 10px;
-  }
-  
-  .submitted-manuscripts-form input[type="text"],
-  .submitted-manuscripts-form input[type="email"],
-  .submitted-manuscripts-form input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .submitted-manuscripts-form button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .submitted-manuscripts-form button[type="button"] {
-    background-color: #ccc;
-    margin-right: 10px;
-  }
-  
-  .submitted-manuscripts-form button[type="submit"] {
-    background-color: #28a745;
-  }
-  
-  .submitted-manuscripts-form .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
+/* Container and Form Styles */
+.form-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  transition: left linear 0.25s; /* Transition the left position of the form */
+  left: 0; /* Initially positioned at the center */
+}
 
-  .popup-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background covering entire page */
-    z-index: 9999;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.3s ease; /* smooth fade-in transition */
+.move-left {
+  left: -25%; /* Move the form to the left to hide it */
+}
+
+
+.submitted-manuscripts-form {
+  width: 50%;
+  max-width: 800px;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.preview-container {
+  width: 50%;
+  max-width: 800px;
+  padding: 20px;
+  /* border: 1px solid #ccc; */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: flex;
+  position: absolute;
+  right: 0; /* Initially positioned at the right side */
+  top: 0;
+  transition: right 0.5s ease; /* Transition the right property */
+}
+
+.preview-content {
+  
+}
+
+
+/* Apply transition only on screens larger than 768px */
+@media screen and (min-width: 769px) {
+  .submitted-manuscripts-form {
+    transition: left linear 0.25s; /* Transition left position of the form */
   }
   
-  .popup-container.success,
-  .popup-container.error {
-    visibility: visible;
-    opacity: 1;
+  .preview-container {
+    transition: right linear 0.25s; /* Transition right position of the preview */
   }
-  
-  .popup-content {
-    width: 400px;
-    height: 200px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-  }
+}
+
+/* Additional Styling for Form Fields and Buttons */
+.submitted-manuscripts-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.submitted-manuscripts-form label {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.submitted-manuscripts-form input[type="text"],
+.submitted-manuscripts-form input[type="email"],
+.submitted-manuscripts-form input[type="file"],
+.submitted-manuscripts-form textarea,
+.submitted-manuscripts-form input[type="date"] {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.submitted-manuscripts-form input[type="file"] {
+  cursor: pointer;
+}
+
+.submitted-manuscripts-form input[type="text"]:focus,
+.submitted-manuscripts-form input[type="email"]:focus,
+.submitted-manuscripts-form input[type="file"]:focus,
+.submitted-manuscripts-form textarea:focus,
+.submitted-manuscripts-form input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.submitted-manuscripts-form textarea {
+  resize: vertical;
+}
+
+.submitted-manuscripts-form button {
+  padding: 14px 28px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitted-manuscripts-form button[type="button"] {
+  background-color: #ccc;
+}
+
+.submitted-manuscripts-form button[type="submit"] {
+  background-color: #28a745;
+}
+
+.submitted-manuscripts-form button:hover {
+  background-color: #0056b3;
+}
+
+.submitted-manuscripts-form .error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Popup Styles */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.popup-content button {
+  margin-top: 10px;
+}
+
+/* Error Message Styles */
+.residency-error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Loader Styles */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+/* Loader animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

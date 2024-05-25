@@ -1,0 +1,41 @@
+/* submittedman.css */
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Style the edit button */
+
+  /* Dropdown content (hidden by default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  /* Show the dropdown content (when clicked) */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Style the dropdown button within the content */
+  .dropdown-content button {
+    color: #333;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+  /* Hover effect on dropdown button */
+  .dropdown-content button:hover {
+    background-color: #ddd;
+  }
+  

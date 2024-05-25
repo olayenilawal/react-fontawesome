@@ -52,7 +52,7 @@ const DashboardStats = () => {
         <p>{stats.reviewForProposal}</p>
       </div>
       <div className="dashboard-stat">
-        <h3>Reviewer Invited but not responded</h3>
+        <h3>Manuscript in Review</h3>
         <p>{stats.reviewed}</p>
       </div>
       <div className="dashboard-stat">

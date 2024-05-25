@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandPointer, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import necessary icons
-import '../assets/css/submittedman.css';
+import { faHandPointer, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { firestore, storage } from '../firebase/firebase';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import InvitePopup from '../components/InvitePopup';
 import { useNavigate } from 'react-router-dom';
-
-
-// Adjust the path to your Firebase configuration file
-
 
 const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
   const [showAbstractPopup, setShowAbstractPopup] = useState(false);
   const [currentAbstract, setCurrentAbstract] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = manuscripts.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(manuscripts.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const fetchAbstract = async (manuscriptId) => {
     try {
-      console.log('Fetching abstract for manuscript ID:', manuscriptId);
       const manuscriptRef = firestore.collection('SubmittedManuscripts').where('ID', '==', manuscriptId);
       const querySnapshot = await manuscriptRef.get();
 
-      console.log('Query results:', querySnapshot.docs);
-
       if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0]; // Assuming there's only one matching document
+        const doc = querySnapshot.docs[0];
         const data = doc.data();
         const abstract = data.abstract;
 
@@ -44,21 +47,10 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
     }
   };
 
-
   const closeAbstractPopup = () => {
     setShowAbstractPopup(false);
     setCurrentAbstract('');
   };
-
-  // const downloadManuscript = async (fullPagesUrl) => {
-  //   try {
-  //     const storageRef = storage.refFromURL(fullPagesUrl);
-  //     const downloadUrl = await storageRef.getDownloadURL();
-  //     window.open(downloadUrl); 
-  //   } catch (error) {
-  //     console.error('Error downloading manuscript:', error);
-  //   }
-  // };
 
   const downloadFile = async (fileUrl) => {
     try {
@@ -69,7 +61,6 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
       console.error('Error downloading file:', error);
     }
   };
-
 
   const viewImageAsPdf = async (imageUrl, outputFormat) => {
     try {
@@ -88,7 +79,7 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
         if (outputFormat === 'png') {
           imgData = canvas.toDataURL('image/png');
         } else if (outputFormat === 'jpeg' || outputFormat === 'jpg') {
-          imgData = canvas.toDataURL('image/jpeg', 1.0); // Quality parameter (0.0 - 1.0)
+          imgData = canvas.toDataURL('image/jpeg', 1.0);
         } else if (outputFormat === 'gif') {
           imgData = canvas.toDataURL('image/gif');
         } else if (outputFormat === 'bmp') {
@@ -109,43 +100,28 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
     }
   };
 
-  // Example usage:
-  viewImageAsPdf('https://example.com/image.jpg', 'jpeg'); // Convert JPEG image to PDF
-  viewImageAsPdf('https://example.com/image.png', 'png'); // Convert PNG image to PDF
-  viewImageAsPdf('https://example.com/image.gif', 'gif'); // Convert GIF image to PDF
-  viewImageAsPdf('https://example.com/image.bmp', 'bmp'); // Convert BMP image to PDF
-  // viewImageAsPdf('https://example.com/image.doc', 'doc');
-
-  // const handleInviteReviewer = (manuscript) => {
-  //   setSelectedManuscript(manuscript);
-  // };
-
-  // const closeReviewerManagement = () => {
-  //   setSelectedManuscript(null);
-  // };
-
-
-
-
   const handleActionClick = async (manuscriptId, action) => {
     switch (action) {
       case 'View':
         handleAction(manuscriptId, 'View');
         break;
       case 'ViewFullManuscript':
-        downloadFile(manuscripts.find(m => m.id === manuscriptId).fullPagesUrl);
+        downloadFile(manuscripts.find((m) => m.id === manuscriptId).fullPagesUrl);
         break;
       case 'ViewPictures':
-        viewImageAsPdf(manuscripts.find(m => m.id === manuscriptId).picturesUrl);
+        viewImageAsPdf(manuscripts.find((m) => m.id === manuscriptId).picturesUrl);
         break;
       case 'ViewWordDocument':
-        downloadFile(manuscripts.find(m => m.id === manuscriptId).firstPageUrl);
+        downloadFile(manuscripts.find((m) => m.id === manuscriptId).firstPageUrl);
         break;
       case 'ViewPDF':
-        downloadFile(manuscripts.find(m => m.id === manuscriptId).fullPagesUrl);
-        break
-        case 'InviteReviewer':
-        navigateToInviteReviewer(manuscriptId); // Use navigate function to go to InviteReviewer page
+        downloadFile(manuscripts.find((m) => m.id === manuscriptId).fullPagesUrl);
+        break;
+      case 'InviteReviewer':
+        navigateToInviteReviewer(manuscriptId);
+        break;
+      case 'InviteMembers':
+        navigateToInviteMembers(manuscriptId);
         break;
       case 'Standardize':
         handleAction(manuscriptId, 'Standardize');
@@ -156,41 +132,46 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
   };
 
   const navigateToInviteReviewer = (manuscriptId) => {
-    // Use navigate function from useNavigate hook to navigate to InviteReviewer page
     navigate(`/manage-reviewers/${manuscriptId}`);
+  };
+
+  const navigateToInviteMembers = (manuscriptId) => {
+    navigate(`/manage-members/${manuscriptId}`);
   };
 
   return (
     <div className="manuscripts-table-container">
       <table className="manuscripts-table">
+        
         <thead>
           <tr>
+            <th>S/N</th>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Institution</th>
             <th>Contact Information</th>
             <th>College</th>
-            <th>Actions</th>
+            <th>Status</th>
+            <th className='actions'>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {manuscripts.map((manuscript) => (
+          {currentItems.map((manuscript, index) => (
             <tr key={manuscript.id}>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{manuscript.id}</td>
               <td>{manuscript.name}</td>
               <td>{manuscript.email}</td>
               <td>{manuscript.institution}</td>
               <td>{manuscript.contactInfo}</td>
               <td>{manuscript.college}</td>
-              <td>
+              <td>{manuscript.status}</td> {/* Display status based on manuscript ID */}
+              <td className='actions'>
                 <div className="action-buttons">
-                  {/* View Action */}
                   <button className="action-button" onClick={() => handleAction(manuscript.id, 'View')}>
                     <FontAwesomeIcon icon={faHandPointer} />
                   </button>
-
-                  {/* Dropdown with Abstract and other actions */}
                   <div className="action-dropdown">
                     <button onClick={() => fetchAbstract(manuscript.id)}>
                       <FontAwesomeIcon icon={faHandPointer} /> View Abstract
@@ -210,6 +191,9 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
                     <button onClick={() => handleActionClick(manuscript.id, 'InviteReviewer')}>
                       <FontAwesomeIcon icon={faPlus} /> Invite Reviewer
                     </button>
+                    <button onClick={() => handleActionClick(manuscript.id, 'InviteMembers')}>
+                      <FontAwesomeIcon icon={faPlus} /> Invite Members
+                    </button>
                     <button onClick={() => handleActionClick(manuscript.id, 'Standardize')}>
                       <FontAwesomeIcon icon={faHandPointer} /> Standardize
                     </button>
@@ -219,7 +203,16 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
             </tr>
           ))}
         </tbody>
+        {/* Pagination */}
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+            <button key={pageNumber} onClick={() => handlePageChange(pageNumber)}>
+              {pageNumber}
+            </button>
+          ))}
+        </div>
       </table>
+
 
 
       {/* Abstract Popup */}
@@ -232,7 +225,6 @@ const SubmittedManuscriptsTable = ({ manuscripts, handleAction }) => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
