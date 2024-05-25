@@ -53,12 +53,22 @@ const ReviewingManuscriptsTable = ({ manuscripts, onHandleAction }) => {
               console.log(`File uploaded: ${file.name}, URL: ${downloadURL}`);
               downloadURLs.push(downloadURL);
             }
-            await firestore.collection('ReviewingManuscripts').doc(manuscriptId).update({ UpdatedManuscript: downloadURLs });
-            console.log('Firestore updated with URLs:', downloadURLs);
-            if (typeof onHandleAction === 'function') {
-              onHandleAction(manuscriptId, 'Upload');
+            // Firestore update section
+            console.log('Updating Firestore with URLs:', downloadURLs);
+            const reviewingRef = firestore.collection('ReviewingManuscripts');
+            const querySnapshot = await reviewingRef.where('id', '==', manuscriptId).get();
+  
+            if (!querySnapshot.empty) {
+              const doc = querySnapshot.docs[0];
+              await doc.ref.update({ UpdatedManuscript: downloadURLs });
+              console.log('Firestore updated successfully');
+              if (typeof onHandleAction === 'function') {
+                onHandleAction(manuscriptId, 'Upload');
+              }
+              window.alert('Document uploaded and Firestore updated successfully.');
+            } else {
+              console.error('Document does not exist:', manuscriptId);
             }
-            window.alert('Document uploaded successfully.');
           } catch (uploadError) {
             console.error('Error uploading manuscript to storage:', uploadError);
           }
@@ -71,7 +81,7 @@ const ReviewingManuscriptsTable = ({ manuscripts, onHandleAction }) => {
     }
     closeConfirmation();
   };
-
+  
 
   const rejectManuscript = async (manuscript) => {
     try {

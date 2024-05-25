@@ -1,20 +1,11 @@
-// PrivateRoute.js
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { auth } from './firebase/firebase';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component }) => {
   const currentUser = auth.currentUser;
 
-  return (
-    
-    <Route
-      {...rest}
-      render={(props) =>
-        currentUser ? <Component {...props} /> : <Redirect to="/signin" />
-      }
-    />
-  );
+  return currentUser ? <Component /> : <Navigate to="/signin" />;
 };
 
 export default PrivateRoute;
