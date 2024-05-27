@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { firestore, storage } from '../firebase/firebase';
 import '../assets/css/manuscriptsform.css';
+import { Image } from 'react-bootstrap';
 
 const ManuscriptsForm = () => {
   const [step, setStep] = useState(1);
@@ -319,7 +320,7 @@ const ManuscriptsForm = () => {
               <>
                 <label htmlFor="picture">Picture (Passport)</label>
                 <input type="file" id="picture" onChange={handlePictureChange} accept="image/*" required />
-                {picturePreview && <img src={picturePreview} alt="Uploaded picture preview" style={{ maxWidth: '200px', marginTop: '10px' }} />}
+                {picturePreview && <Image src={picturePreview} alt="Uploaded picture preview" style={{ maxWidth: '200px', marginTop: '10px' }} />}
 
                 <label htmlFor="firstPage">Cover Letter</label>
                 <input type="file" id="firstPage" onChange={(e) => setFirstPage(e.target.files[0])} required />
